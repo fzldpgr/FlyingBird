@@ -2,5 +2,7 @@
 <resources>
 
     <string name="app_name">flyingBird</string>
+    <string name="tap_start">Tap screen to start</string>
+    <string name="try_again">You lost! Tap to screen to try again</string>
 
 </resources>

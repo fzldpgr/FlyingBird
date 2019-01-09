@@ -16,28 +16,31 @@ import java.util.Random;
 
 import sun.security.provider.SHA;
 
-public class FlyingBird extends ApplicationAdapter {
-	SpriteBatch batch;
-	Texture img,bird;
-	float bw,bh,sw,sh,bx,by;
-	float velocity = 0.0f;
-	float gravity = 0.6f;
-	int nbees = 3;
-	float beesx[] = new float[nbees];
-	float beesy[][] = new float[3][nbees];
-	ShapeRenderer sr;
-	BitmapFont font;
-	BitmapFont font1;
-	Sound sound;
-	int state=0;
-	Texture bee1,bee2,bee3;
-	float beex,bee1y,bee2y,bee3y;
-	Circle c_bird,c_bee1[],c_bee2[],c_bee3[];
-	int score=0;
-	Boolean flag=true;
-	Boolean flag1=true;
+public class FlyingBird extends ApplicationAdapter
+{
+    private SpriteBatch batch;
+	private Texture img, bird;
+    private float bw, bh, sw, sh, bx, by;
+    private float velocity = 0.0f;
+    private float gravity = 0.6f;
+    private int nbees = 3;
+    private float beesx[] = new float[nbees];
+    private float beesy[][] = new float[3][nbees];
+    private ShapeRenderer sr;
+    private BitmapFont font;
+    private BitmapFont font1;
+    private Sound sound;
+    private int state=0;
+    private Texture bee1, bee2, bee3;
+    private float beex, bee1y, bee2y, bee3y;
+    private Circle c_bird, c_bee1[], c_bee2[], c_bee3[];
+    private int score = 0;
+    private Boolean flag = true;
+    private Boolean flag1 = true;
+
 	@Override
-	public void create () {
+	public void create ()
+    {
 		batch = new SpriteBatch();
 		img = new Texture("storyboard6.png");
 		bird = new Texture("frame-1.png");
@@ -66,11 +69,10 @@ public class FlyingBird extends ApplicationAdapter {
 
 		sound = Gdx.audio.newSound(Gdx.files.internal("lose.ogg"));
 
-
 		//sr = new ShapeRenderer();
 
-
-		for(int i = 0 ; i<nbees ; i++){
+		for(int i = 0 ; i<nbees ; i++)
+		{
 			beesx[i] = sw+i*sw/2;
 			Random r1 = new Random();
 			Random r2 = new Random();
@@ -87,18 +89,23 @@ public class FlyingBird extends ApplicationAdapter {
 	}
 
 	@Override
-	public void render () {
+	public void render ()
+    {
 		batch.begin();
 		batch.draw(img,0,0,sw,sh);
 		batch.draw(bird,bx,by,bw,bh);
-		if(state==1){
-			if(Gdx.input.justTouched()){
+		if(state==1)
+		{
+			if(Gdx.input.justTouched())
+			{
 				velocity = -15;
 			}
 			flag1=true;
 
-			for(int i=0;i<nbees;i++){
-				if(beesx[i]<0){
+			for(int i=0;i<nbees;i++)
+			{
+				if(beesx[i]<0)
+				{
 					flag=true;
 					beesx[i] = nbees*sw/2;
 					Random r1 = new Random();
@@ -109,35 +116,45 @@ public class FlyingBird extends ApplicationAdapter {
 					beesy[1][i] = r2.nextFloat() * sh;
 					beesy[2][i] = r3.nextFloat() * sh;
 				}
+
 				font.draw(batch,String.valueOf(score),sw-bw,bh);
-				if(bx>beesx[i] && flag){
+				if(bx>beesx[i] && flag)
+				{
 					score++;
 					System.out.println(score);
 					flag=false;
 				}
+
 				beesx[i] = beesx[i] - 5;
 				batch.draw(bee1,beesx[i],beesy[0][i],bw,bh);
 				batch.draw(bee2,beesx[i],beesy[1][i],bw,bh);
 				batch.draw(bee3,beesx[i],beesy[2][i],bw,bh);
 			}
-			if(by < bh){
+
+			if(by < bh)
+			{
 				by = sw/3;
 				velocity = 0;
 				state=2;
 			}
-			else {
+			else
+            {
 				velocity = velocity + gravity;
 				by = by-velocity;
 			}
 		}
-		else if(state==2){
-			font1.draw(batch,"You lost! Tap to screen to try again!",0,sh/2);
+		else if(state==2)
+		{
+			font1.draw(batch,"You lost! Tap to screen to try again",0,sh/2);
 
-			if(flag1) {
+			if(flag1)
+			{
 				sound.play();
 				flag1=false;
 			}
-			if(Gdx.input.justTouched()){
+
+			if(Gdx.input.justTouched())
+			{
 				bx=Gdx.graphics.getWidth()/4;
 				by=Gdx.graphics.getHeight();
 				score=0;
@@ -159,8 +176,9 @@ public class FlyingBird extends ApplicationAdapter {
 				state = 1;
 			}
 		}
-		else if(state==0){
-			font1.draw(batch,"Tap to screen to start!",0,sh/2);
+		else if(state==0)
+		{
+			font1.draw(batch,"Tap screen to start",0,sh/2);
 			if(Gdx.input.justTouched()){
 				state=1;
 			}
@@ -168,29 +186,31 @@ public class FlyingBird extends ApplicationAdapter {
 
 		c_bird.set(bx+bw/2,by+bh/2,bw/2);
 		//sr.begin(ShapeRenderer.ShapeType.Filled);
-		for(int i=0;i<nbees;i++){
+
+		for(int i=0;i<nbees;i++)
+		{
 			/*sr.setColor(Color.BLUE);
 			sr.circle(beesx[i]+bw/2,beesy[0][i]+bh/2,bw/2);
 			sr.circle(beesx[i]+bw/2,beesy[1][i]+bh/2,bw/2);
 			sr.circle(beesx[i]+bw/2,beesy[2][i]+bh/2,bw/2);
 			sr.circle(bx+bw/2,by+bh/2,bw/2);*/
+
 			c_bee1[i].set(beesx[i]+bw/2,beesy[0][i]+bh/2,bw/2);
 			c_bee2[i].set(beesx[i]+bw/2,beesy[1][i]+bh/2,bw/2);
 			c_bee3[i].set(beesx[i]+bw/2,beesy[2][i]+bh/2,bw/2);
 			if(Intersector.overlaps(c_bird,c_bee1[i]) || Intersector.overlaps(c_bird,c_bee2[i]) || Intersector.overlaps(c_bird,c_bee3[i])){
 				state = 2;
 			}
-
 		}
+
 		//sr.end();
 
 		batch.end();
-
-
 	}
 	
 	@Override
-	public void dispose () {
+	public void dispose ()
+    {
 
 	}
 }
